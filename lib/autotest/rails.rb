@@ -1,7 +1,7 @@
 require 'autotest'
 
 class Autotest::Rails < Autotest
-  VERSION = '4.1.2'
+  VERSION = '4.1.3'
 
   def initialize # :nodoc:
     super
@@ -18,6 +18,7 @@ class Autotest::Rails < Autotest
 
     add_mapping %r%^test/fixtures/(.*)s.yml% do |_, m|
       ["test/unit/#{m[1]}_test.rb",
+      "test/models/#{m[1]}_test.rb",
        "test/controllers/#{m[1]}_controller_test.rb",
        "test/views/#{m[1]}_view_test.rb",
        "test/functional/#{m[1]}_controller_test.rb"]
@@ -28,7 +29,7 @@ class Autotest::Rails < Autotest
     end
 
     add_mapping %r%^app/models/(.*)\.rb$% do |_, m|
-      "test/unit/#{m[1]}_test.rb"
+     [ "test/unit/#{m[1]}_test.rb","test/models/#{m[1]}_test.rb"]
     end
 
     add_mapping %r%^app/helpers/application_helper.rb% do
@@ -67,7 +68,7 @@ class Autotest::Rails < Autotest
     end
 
     add_mapping %r%^test/test_helper.rb|config/((boot|environment(s/test)?).rb|database.yml)% do
-      files_matching %r%^test/(unit|controllers|views|functional)/.*_test\.rb$%
+      files_matching %r%^test/(unit|models|controllers|views|functional)/.*_test\.rb$%
     end
   end
 
